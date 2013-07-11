@@ -1,5 +1,6 @@
 *.gexf
 *.csv
+*.json
 
 lib-cov
 *.seed

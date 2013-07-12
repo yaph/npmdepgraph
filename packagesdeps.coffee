@@ -7,9 +7,13 @@ deps = []
 cache = {}
 
 write = (name, firstletter)->
+    console.log 'Processing package: ' + name
     npm.commands.view [name], true, (err, pkg)->
+        return if not typeof pkg is 'object'
+
         latest = pkg[Object.keys(pkg)[0]]
         return if typeof latest is 'undefined'
+
         pkgobj = {}
         props.map (prop)->
             if latest.hasOwnProperty prop
@@ -17,7 +21,7 @@ write = (name, firstletter)->
 
         # package dependencies
         adjlist = [pkgobj.name]
-        if typeof pkgobj.dependencies is 'object'
+        if pkgobj.dependencies and typeof pkgobj.dependencies is 'object'
             pkgdeps = Object.keys(pkgobj.dependencies)
             adjlist = adjlist.concat pkgdeps if pkgdeps.length
         deps.push adjlist.join ';'
@@ -38,14 +42,17 @@ procpkgs = (pkgs)->
         write name, firstletter
 
 
-#npm.load { outfd : null }, ()->
-    #fs.readFile 'packages.json', 'utf8', (err, content)->
-        #procpkgs JSON.parse(content)
-
-testpkgs = {
-    'd3': {name: 'd3'},
-    'd3-browser': {name: 'd3-browser'},
-    'zzz': {name: 'zzz'}
-}
 npm.load { outfd : null }, ()->
-    procpkgs testpkgs
+    fs.readFile 'packages.json', 'utf8', (err, content)->
+        procpkgs JSON.parse(content)
+
+
+test = ()->
+    testpkgs = {
+        'avconv': {name: 'avconv'},
+        'd3': {name: 'd3'},
+        'd3-browser': {name: 'd3-browser'},
+        'zzz': {name: 'zzz'}
+    }
+    npm.load { outfd : null }, ()->
+        procpkgs testpkgs

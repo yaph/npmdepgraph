@@ -9,7 +9,7 @@ cache = {}
 write = (name, firstletter)->
     console.log 'Processing package: ' + name
     npm.commands.view [name], true, (err, pkg)->
-        return if not typeof pkg is 'object'
+        return if not typeof pkg is 'object' or !pkg
 
         latest = pkg[Object.keys(pkg)[0]]
         return if typeof latest is 'undefined'
@@ -49,6 +49,7 @@ npm.load { outfd : null }, ()->
 
 test = ()->
     testpkgs = {
+        'databinding': {name: 'databinding'},
         'avconv': {name: 'avconv'},
         'd3': {name: 'd3'},
         'd3-browser': {name: 'd3-browser'},
@@ -56,3 +57,5 @@ test = ()->
     }
     npm.load { outfd : null }, ()->
         procpkgs testpkgs
+
+#test()

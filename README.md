@@ -1,2 +1,6 @@
 # npm Packages Dependencies Graph
-create json files based on first char of packages name
+
+Scripts to retrieve data for creating the following npm package dependencies graph visualizations:
+
+* [npm Packages Dependencies Graph](http://exploringdata.github.io/vis/npm-packages-dependencies/)
+* [npm Top Packages Dependencies Graph](http://exploringdata.github.io/vis/npm-top-packages-dependencies/)
